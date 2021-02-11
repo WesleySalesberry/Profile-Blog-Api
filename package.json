@@ -1,0 +1,26 @@
+{
+  "name": "profile_api",
+  "version": "1.0.0",
+  "description": "An api to power the my profiles frontend and blog",
+  "main": "server.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server",
+    "dev": "nodemon server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.24.0",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.14",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.7"
+  }
+}
