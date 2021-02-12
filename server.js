@@ -17,11 +17,13 @@ app.use(fileUpload())
 
 const blog = require('./routes/blog')
 const comment = require('./routes/comment')
+const projects = require('./routes/project')
 const auth = require('./routes/auth')
 
 app.use('/api/v1/blog', blog)
 app.use('/api/v1/comment', comment)
 app.use('/api/v1/auth', auth)
+app.use('/api/v1/project', projects)
 
 //@test Logging routes to compare to API Call
 dotenv.config({ path: './config/config.env'})
