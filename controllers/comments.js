@@ -1,6 +1,7 @@
 const Comment = require('../models/Comment')
 const Blog = require('../models/Blog')
 const handler = require('../middlewares/handler')
+const ErrorResponse = require('../utils/errorResponse')
 
 
 //@desc  Create a commit
@@ -13,11 +14,13 @@ exports.addComment = handler( async (req, res, next) => {
 
     if(!blog){ 
         console.log('No match')
-        return next()
+        return next(
+            new ErrorResponse(`No Blog with id ${blogID}`, 404)
+        )
     }
-    //console.log(req.blog.blogID)
+    
     req.body.blog = req.params.blogID
-    //console.log(req.body)
+
     const comment = await Comment.create(req.body)
 
     res.status(200).json({

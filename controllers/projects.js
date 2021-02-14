@@ -50,11 +50,19 @@ exports.createProject = handler( async (req, res, next) => {
 // @route  GET /api/v1/project/:projectId
 // @access Private
 exports.updateProject = handler( async (req, res, next) => {
-      const projectID = req.params.projectId
-        const project = await Project.findByIdAndUpdate(projectID, req.body, {
+    const projectID = req.params.projectId
+    const project = await Project.findById(projectID)
+    
+    if(!project){
+        return next(
+            new ErrorResponse(`Project not found with id of ${projectID}`, 404)
+        )
+    }
+    project = await Project.findByIdAndUpdate(projectID, req.body, {
         new: true,
         runValidators: true
     })
+
     res.status(200).json({
         success: true,
         data: project
@@ -65,13 +73,19 @@ exports.updateProject = handler( async (req, res, next) => {
 // @route  GET /api/v1/project/:projectId
 // @access Private
 exports.deleteProject = handler( async (req, res, next) => {
-      const projectID = req.params.projectId
-      const removedProject = await Project.findById(projectID)
-    removedProject.remove()
+    const projectID = req.params.projectId
+    const removedProject = await Project.findById(projectID)
 
-        res.status(200).json({
-            success: true,
-            data: `Project with id ${projectID} has been deleted`
+    if(!project){
+        return next(
+            new ErrorResponse(`Project not found with id of ${projectID}`, 404)
+        )
+    }
+
+    removedProject.remove()
+    res.status(200).json({
+        success: true,
+        data: `Project with id ${projectID} has been deleted`
     })
 })
 

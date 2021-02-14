@@ -2,6 +2,7 @@ const Blog = require('../models/Blog')
 const handler = require('../middlewares/handler')
 const path = require('path')
 const cloudinary = require('../utils/cloudinary')
+const ErrorResponse = require('../utils/errorResponse')
 
 
 //@desc Get published blogs
@@ -39,7 +40,15 @@ exports.getUnpublishedBlogs = handler (async (req, res, next) => {
 //@access Public
 exports.getBlog = handler( async (req, res, next) => {
     const blogID = req.params.id
+
     const blog = await Blog.findById(blogID).populate({path: 'comments', options:{ sort: {'createdAt': -1}}})
+
+    if(!blog){
+        return next(
+            new ErrorResponse(`Blog not found with id ${blogID}`, 404)
+        )
+    }
+
     res.status(200).json({
         success: true,
         data: blog
@@ -113,6 +122,12 @@ exports.deleteBlog = handler( async (req, res, next) => {
  
         const blogID = req.params.id
         const blog = await Blog.findById(blogID)
+
+        if(!blog){
+            return next(
+                new ErrorResponse(`Blog not found with id of ${blogID}`, 404)
+        }
+
         blog.remove()
 
         res.status(200).json({
@@ -128,6 +143,13 @@ exports.deleteBlog = handler( async (req, res, next) => {
 //@access Private
 exports.updateBlog = handler( async (req, res, next) => {
         const blogID = req.params.id
+        const blog = await Blog.findById(blogID)
+
+        if(!blog){
+            return next(
+                new ErrorResponse(`Blog not found with id of ${blogID}`, 404)
+        }
+
         const blog = await Blog.findByIdAndUpdate(blogID, req.body, {
         new: true,
         runValidators: true

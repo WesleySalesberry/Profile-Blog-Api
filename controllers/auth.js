@@ -1,8 +1,10 @@
 const User = require('../models/User')
-const handler = require('../middlewares/handler')
 const crypto = require('crypto')
 
+const handler = require('../middlewares/handler')
 const tokenResponse = require('../middlewares/token')
+const ErrorResponse = require('../utils/errorResponse')
+
 
 //Place holder for possable use later
 // @desc   Register User
@@ -30,22 +32,26 @@ exports.login = handler( async (req, res, next) => {
     const { email, password } = req.body
 
     if(!email || !password){
-        console.log("Please provide an email and password, 400")
-        return next()
+        return next(
+            new ErrorResponse('Please provide an email and password', 400)
+        )
     }
 
     const user = await User.findOne({ email }).select('+password')
 
     if(!user){
-        console.log('Invalid credentials', 401)
-        return next()
+        return next(
+             new ErrorResponse('Invalid credentials', 400)
+        )
     }
 
     const isMatched = await user.matchPassword(password)
 
     if(!isMatched){
-        console.log('Invalid credentials, 401')
-        return next()
+        return next(
+             new ErrorResponse('Invalid credentials', 400)
+        )
+        
     }
 
     tokenResponse(user, 200, res)
@@ -73,8 +79,9 @@ exports.updatePasword = handler( async (req, res, next) => {
     const user = await User.findById(req.user.id).select('+password')
     const isMatched = await user.matchPassword(req.body.currentPassword)
     if(!isMatched){
-        console.log('Password is incorrect 401')
-        return next()
+        return next(
+             new ErrorResponse('Password is incorrect', 401)
+        )
     }
 
     user.password = req.body.newPassword;
