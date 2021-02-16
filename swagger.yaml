@@ -5,7 +5,7 @@ info:
   contact: {}
   version: '1.0'
 servers:
-- url: http://localhost:5000/api/v1
+- url: https://profile-blog-api.herokuapp.com//api/v1
   variables: {}
 paths:
   /blog/602ab98a7e7a6d0828b4a269:
