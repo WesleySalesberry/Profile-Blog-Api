@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const { protect } = require('../middlewares/protect')
 
 const { getProjects, getProject, createProject, updateProject, deleteProject} = require('../controllers/projects')
 
@@ -8,19 +9,20 @@ const { getProjects, getProject, createProject, updateProject, deleteProject} = 
 router
     .route('/')
     .get(getProjects)
+    .post(protect, createProject)
 
 router
     .route('/:projectId')
     .get(getProject)
     //private route
-    .put(updateProject)
+    .put(protect, updateProject)
     //private route
-    .delete(deleteProject)
+    .delete(protect, deleteProject)
 
-router
-    .route('/:userID')
-    //private route
-    .post(createProject)
+// router
+//     .route('/')
+//     //private route
+//     .post(protect, createProject)
     
 
 

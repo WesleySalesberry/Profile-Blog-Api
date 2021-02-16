@@ -2,35 +2,33 @@ const express = require('express')
 const router = express.Router()
 
 const commentsRouter = require('./comment')
+const { protect } = require('../middlewares/protect')
 
 const {getBlogs, getBlog, getUnpublishedBlogs, createBlog, blogPhoto, deleteBlog, updateBlog} = require('../controllers/blog')
 
 router.use('/comment/:blogID', commentsRouter)
 
-
-//TODO: need to figure out how to protect these routes
 router
     .route('/')
     .get(getBlogs)
-    //Private route
-    .post(createBlog)
+    .post(protect, createBlog)
 
 router
     .route('/unpublished')
     //private route
-    .get(getUnpublishedBlogs)
+    .get(protect, getUnpublishedBlogs)
     
 router
     .route('/:id')
     .get(getBlog)
     //private route
-    .put(updateBlog)
-    .delete(deleteBlog)
+    .put(protect, updateBlog)
+    .delete(protect, deleteBlog)
 
 router
     .route('/image/:id')
     //private route
-    .put(blogPhoto)
+    .put(protect, blogPhoto)
 
 
 module.exports = router
