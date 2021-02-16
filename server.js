@@ -4,8 +4,8 @@ const app = express()
 const swaggerUI = require("swagger-ui-express");
 const YAML = require('yamljs')
 const swaggerDocument = YAML.load('./swagger.yaml');
-//const swaggerJsDoc = require("swagger-jsdoc");
-const dotenv = require('dotenv');
+
+const dotenv = require('dotenv').config();
 const morgan = require('morgan');
 const colors = require('colors');
 const cors = require('cors');
@@ -15,7 +15,7 @@ const cookieParser = require('cookie-parser');
 
 const errorHandler = require('./middlewares/errorHandler');
 
-const connectDB = require('./config/db');
+const connectDB = require('./utils/db');
 
 const PORT = process.env.PORT || 5000
 
@@ -47,8 +47,9 @@ app.get('*', (req, res) => {
     })
 });
 
+//dotenv.config()
+
 //@test Logging routes to compare to API Call
-dotenv.config({ path: './config/config.env'})
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'))
 }
