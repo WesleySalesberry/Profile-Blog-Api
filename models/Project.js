@@ -33,6 +33,11 @@ const ProjectSchema = new mongoose.Schema({
         'Please use a valid URL with HTTP or HTTPS'
       ]
     },
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now

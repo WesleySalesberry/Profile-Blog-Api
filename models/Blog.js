@@ -57,6 +57,12 @@ BlogSchema.pre('save', async function(next){
     this.image = 'https://source.unsplash.com/1600x900/?programming,developer'
 })
 
+//Deletes comments when a blog is deleted
+BlogSchema.pre('remove', async function(next){
+    await this.model('Comment').deleteMany({ blog: this._id })
+    next()
+})
+
 BlogSchema.virtual('comments', {
     ref: 'Comment',
     localField: '_id',

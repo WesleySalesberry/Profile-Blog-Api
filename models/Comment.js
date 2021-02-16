@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 /*************************************************
      ✔: User
      ✔: Email
-     X: Comment
+     ✔: Comment
      ✔: Date Added 
 *******************************************************/
 
