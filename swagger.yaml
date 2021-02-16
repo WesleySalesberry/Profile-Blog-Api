@@ -1,0 +1,397 @@
+openapi: 3.0.0
+info:
+  title: Profile API
+  description: Integrated profile with blog
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost:5000/api/v1
+  variables: {}
+paths:
+  /blog/602ab98a7e7a6d0828b4a269:
+    get:
+      tags:
+      - Blog
+      summary: Get a single blog post
+      description: Get a single blog by id with all comments
+      operationId: Get a single blog post
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: application/json
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - Blog
+      summary: Delete A Blog Post
+      description: Delete A Blog Post
+      operationId: DeleteABlogPost
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog:
+    get:
+      tags:
+      - Blog
+      summary: All published Blogs
+      description: Gets all published blog post
+      operationId: AllpublishedBlogs
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - Blog
+      summary: Create a blog post
+      description: Creates a blog post
+      operationId: Createablogpost
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateablogpostRequest'
+            example:
+              title: Testing loging out 2
+              body: Some text that that is in the blog
+              tags: Java, C++, Python Javascript
+              isPublished: false
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog/602a9d727651d7352816b545:
+    put:
+      tags:
+      - Blog
+      summary: Update Blog post
+      operationId: Update Blog Post
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBlogpostRequest'
+            example:
+              isPublished: false
+              tags: javascript
+              title: Blog Test Zero
+              body: Some text that that is in the blog 0
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog/unpublished:
+    get:
+      tags:
+      - Blog
+      summary: All unpublished blogs
+      description: 'Returns all unpublished blog post '
+      operationId: Allunpublishedblogs
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog/comment/602a9d727651d7352816b545:
+    post:
+      tags:
+      - Comments
+      summary: Creates a comment
+      description: >
+        Adds a commit to a blog
+      operationId: Creates a Comment
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatesacommentRequest'
+            example:
+              name: This comment goes to delete blog test
+              email: test@email.com
+              comment: The body of the comment
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/login:
+    post:
+      tags:
+      - Auth
+      summary: Login In Route
+      operationId: LoginInRoute
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInRouteRequest'
+            example:
+              email: demo@email.com
+              password: "123456"
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/logout:
+    get:
+      tags:
+      - Auth
+      summary: Logout
+      operationId: Logout
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: application/json
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /project:
+    get:
+      tags:
+      - Projects
+      summary: Get all projects
+      operationId: Getallprojects
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - Projects
+      summary: Create a project
+      description: Creates a single project
+      operationId: Createaproject
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateaprojectRequest'
+            example:
+              name: Project 5
+              description: Some cool stuff this project does
+              languages: Javascript, HTML, CSS
+              website: http://example.com/
+              github: https://github.com
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /project/602abb5b7e7a6d0828b4a270:
+    get:
+      tags:
+      - Projects
+      summary: Gets a single project
+      description: 'Gets a single project with the project id. '
+      operationId: Getsasingleproject
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /project/602ab478bd6ac8e847bc9aa1:
+    put:
+      tags:
+      - Projects
+      summary: Updates a project
+      description: Makes updates to projects
+      operationId: Updatesaproject
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatesaprojectRequest'
+            example:
+              description: Some cool stuff that project 0 does
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /project/602abb657e7a6d0828b4a272:
+    delete:
+      tags:
+      - Projects
+      summary: Delete
+      description: Deletes a project from the DB
+      operationId: Delete
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    CreateablogpostRequest:
+      title: Create a blog post request
+      required:
+      - title
+      - body
+      - tags
+      - isPublished
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: string
+        isPublished:
+          type: string
+      example:
+        title: Blog Title
+        body: Blog Content
+        tags: Java, C++, Python Javascript
+        isPublished: false
+    UpdateBlogpostRequest:
+      title: Update Blog Post
+      required:
+      - isPublished
+      - tags
+      - title
+      - body
+      type: object
+      properties:
+        isPublished:
+          type: string
+        tags:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+      example:
+        title: Change the title
+        body: Edit the body of the blog
+        tags: Add tags
+        isPublished: Change from true to false or vice versa
+    CreatesacommentRequest:
+      title: Create A Comment
+      required:
+      - name
+      - email
+      - comment
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        comment:
+          type: string
+      example:
+        name: Name of person creating the comment
+        email: name@email.com
+        comment: The body of the comment
+    LoginInRouteRequest:
+      title: Log In Route
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: demo@email.com
+        password: 123456
+    CreateaprojectRequest:
+      title: Create A Project
+      required:
+      - name
+      - description
+      - languages
+      - website
+      - github
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        languages:
+          type: string
+        website:
+          type: string
+        github:
+          type: string
+      example:
+        name: Project Name
+        description: Some cool stuff this project does
+        languages: Javascript, HTML, CSS
+        website: The projects website
+        github: Users Github Link
+    UpdatesaprojectRequest:
+      title: Update A Project
+      required:
+      - description
+      type: object
+      properties:
+        description:
+          type: string
+      example:
+        name: Change the name
+        description: Some cool stuff that the project does
+        website: Change the website
+        github: Change the link to the repo
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+- httpBearer: []
+tags:
+- name: Blog
+- name: Comments
+- name: Auth
+- name: Projects
