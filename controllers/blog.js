@@ -4,12 +4,11 @@ const path = require('path')
 const cloudinary = require('../utils/cloudinary')
 const ErrorResponse = require('../utils/errorResponse')
 
-
 //@desc Get published blogs
 //@route GET /api/v1/blogs
 //@access Public
 exports.getBlogs = handler (async (req, res, next) => {
-    let blog = await Blog.find().populate('comment')
+    let blog = await Blog.find().sort('-createdAt')
     blog = blog.filter(item => item.isPublished === true)
 
     res.status(200).json({
@@ -60,8 +59,8 @@ exports.getBlog = handler( async (req, res, next) => {
 //@route GET /api/v1/blog
 //@access Private
 exports.createBlog = handler( async (req, res, next) => {
+    req.body.user = req.user.id
     const blog = await Blog.create(req.body)
-
     res.status(200).json({
         success: true,
         data: blog
@@ -125,7 +124,7 @@ exports.deleteBlog = handler( async (req, res, next) => {
 
         if(!blog){
             return next(
-                new ErrorResponse(`Blog not found with id of ${blogID}`, 404)
+                new ErrorResponse(`Blog not found with id of ${blogID}`, 404))
         }
 
         blog.remove()
@@ -139,18 +138,17 @@ exports.deleteBlog = handler( async (req, res, next) => {
 
 
 //@desc  Update a blog
-//@route GET /api/v1/blog/:id
+//@route PUT /api/v1/blog/:id
 //@access Private
 exports.updateBlog = handler( async (req, res, next) => {
         const blogID = req.params.id
-        const blog = await Blog.findById(blogID)
+        let blog = await Blog.findById(blogID)
 
         if(!blog){
-            return next(
-                new ErrorResponse(`Blog not found with id of ${blogID}`, 404)
+            return next(new ErrorResponse(`Blog not found with id of ${blogID}`, 404))
         }
 
-        const blog = await Blog.findByIdAndUpdate(blogID, req.body, {
+        blog = await Blog.findByIdAndUpdate(blogID, req.body, {
         new: true,
         runValidators: true
     })

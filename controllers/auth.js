@@ -5,7 +5,6 @@ const handler = require('../middlewares/handler')
 const tokenResponse = require('../middlewares/token')
 const ErrorResponse = require('../utils/errorResponse')
 
-
 //Place holder for possable use later
 // @desc   Register User
 // @route  POST /api/v1/auth/register
@@ -61,7 +60,7 @@ exports.login = handler( async (req, res, next) => {
 // @route  GET /api/v1/auth/logout
 // @access Private
 exports.logout = handler(async (req, res, next) => {
-    res.cookies('token', 'none',{
+    res.cookie('token', 'none',{
         expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true
     })

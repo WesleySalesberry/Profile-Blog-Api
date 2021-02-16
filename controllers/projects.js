@@ -34,15 +34,14 @@ exports.getProject = handler( async (req, res, next) => {
 
 
 // @desc   Create A Projects
-// @route  GET /api/v1/project/userID
+// @route  GET /api/v1/project
 // @access Private
 exports.createProject = handler( async (req, res, next) => {
-    const project = req.body
-    const myProject = await Project.create(project)
-
+    req.body.user = req.user.id
+    const project = await Project.create(req.body)
     res.status(200).json({
         success: true,
-        data: myProject
+        data: project
     })
 })
 
@@ -51,7 +50,7 @@ exports.createProject = handler( async (req, res, next) => {
 // @access Private
 exports.updateProject = handler( async (req, res, next) => {
     const projectID = req.params.projectId
-    const project = await Project.findById(projectID)
+    let project = await Project.findById(projectID)
     
     if(!project){
         return next(
@@ -76,7 +75,7 @@ exports.deleteProject = handler( async (req, res, next) => {
     const projectID = req.params.projectId
     const removedProject = await Project.findById(projectID)
 
-    if(!project){
+    if(!removedProject){
         return next(
             new ErrorResponse(`Project not found with id of ${projectID}`, 404)
         )
