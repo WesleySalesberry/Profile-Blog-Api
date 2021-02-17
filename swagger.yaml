@@ -10,7 +10,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-- url: https://profile-blog-api.herokuapp.com/api/v1
+- url: http://localhost:5000/api/v1
   variables: {}
 paths:
   /auth/login:
@@ -59,8 +59,8 @@ paths:
     get:
       tags:
       - Projects
-      summary: Get all projects
-      description: You do not need to be logged in to get all Projects
+      summary: Returns all projects
+      description: This route returns all projects and does not require the user to be logged in to see all projects. 
       operationId: Getallprojects
       parameters: []
       responses:
@@ -69,10 +69,13 @@ paths:
           headers: {}
       deprecated: false
     post:
+      security:
+        - {}
+        - bearerAuth: []
       tags:
       - Projects
       summary: Create a project
-      description: Creates a single project
+      description: This route is only accessable when the user is logged in and creates a project
       operationId: Createaproject
       parameters: []
       requestBody:
@@ -95,12 +98,10 @@ paths:
       deprecated: false
   /project/{projectID}:
     get:
-      security:
-        - bearerAuth: []
       tags:
       - Projects
       summary: Gets a single project
-      description: 'Gets a single project with the project id. '
+      description: This route returns a single project and does not require the user to be logged in. 
       operationId: Getsasingleproject
       parameters:
         - in: path
@@ -129,10 +130,13 @@ paths:
           headers: {}
       deprecated: false
     put:
+      security:
+        - {}
+        - bearerAuth: []
       tags:
       - Projects
       summary: Updates a project
-      description: Makes updates to projects
+      description: Requires the user to be logged in to be able to update a project
       operationId: Updatesaproject
       parameters:
         - in: path
@@ -161,10 +165,13 @@ paths:
           headers: {}
       deprecated: false
     delete:
+      security:
+        - {}
+        - bearerAuth: []
       tags:
       - Projects
-      summary: Delete
-      description: Deletes a project from the DB
+      summary: Deletes a project
+      description: User must be logged in to be able to delete a project
       operationId: Delete
       parameters:
         - in: path
@@ -193,10 +200,13 @@ paths:
           headers: {}
       deprecated: false
     post:
+      security:
+        - {}
+        - bearerAuth: []
       tags:
       - Blog
       summary: Create a blog post
-      description: Creates a blog post
+      description: The user must be logged in to access this route. This routes creates a blog post, the default isPublished is set to false.
       operationId: Createablogpost
       parameters: []
       requestBody:
@@ -219,11 +229,12 @@ paths:
   /blog/unpublished:
     get:
       security:
+        - {}
         - bearerAuth: []
       tags:
       - Blog
       summary: All unpublished blogs
-      description: Returns all unpublished blog post
+      description: User must be logged in to gain access to all unpublished blog post
       operationId: Allunpublishedblogs
       parameters: []
       responses:
@@ -235,8 +246,8 @@ paths:
     get:
       tags:
       - Blog
-      summary: Get a single blog post
-      description: Get a single blog by id with all comments
+      summary: Returns a single blog post
+      description: No log in required to see a single blog by id with all comments
       operationId: Get a single blog post
       parameters:
         - in: path
@@ -252,10 +263,13 @@ paths:
           headers: {}
       deprecated: false
     put:
+      security:
+        - {}
+        - bearerAuth: []
       tags:
       - Blog
       summary: Update Blog Post
-      operationId: Update Blog Post
+      operationId: Requires authorization to access update a blog post
       parameters:
         - in: path
           name: blogID
@@ -282,10 +296,13 @@ paths:
           headers: {}
       deprecated: false
     delete:
+      security:
+        - {}
+        - bearerAuth: []
       tags:
       - Blog
       summary: Delete A Blog Post
-      description: Delete A Blog Post
+      description: Requires authorization to be able to delete a blog post
       operationId: DeleteABlogPost
       parameters:
         - in: path
@@ -302,6 +319,9 @@ paths:
       deprecated: false
   /blog/image/{blogID}:
     put:
+      security:
+        - {}
+        - bearerAuth: []
       tags:
       - Blog
       summary: Add an image
@@ -331,7 +351,7 @@ paths:
       tags:
       - Comments
       summary: Creates a comment
-      description: You do not need to be logged in to make a Comment. Adds a commit to a blog
+      description: You do not need authorization to make a Comment.
       operationId: Creates a Comment
       parameters:
         - in: path
