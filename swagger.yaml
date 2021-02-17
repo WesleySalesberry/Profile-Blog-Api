@@ -1,158 +1,31 @@
 openapi: 3.0.0
 info:
   title: Profile API
-  description: Integrated profile with blog
-  contact: {}
-  version: '1.0'
+  description: A simple CRUD API that can be used to display projects that you created and write simple blogs about them or use as a stand alone API for ether. See the code at [https://github.com/WesleySalesberry/Profile-Blog-Api](Github)
+  version: 'v1.0.0'
+  termsOfService: https://smartbear.com/terms-of-use/
+  contact:
+    email: wesley.salesberry@hotmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
 - url: https://profile-blog-api.herokuapp.com/api/v1
   variables: {}
 paths:
-  /blog/602ab98a7e7a6d0828b4a269:
-    get:
-      tags:
-      - Blog
-      summary: Get a single blog post
-      description: Get a single blog by id with all comments
-      operationId: Get a single blog post
-      parameters:
-      - name: Content-Type
-        in: header
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-          example: application/json
-      responses:
-        200:
-          description: ''
-          headers: {}
-      deprecated: false
-    delete:
-      tags:
-      - Blog
-      summary: Delete A Blog Post
-      description: Delete A Blog Post
-      operationId: DeleteABlogPost
-      parameters: []
-      responses:
-        200:
-          description: ''
-          headers: {}
-      deprecated: false
-  /blog:
-    get:
-      tags:
-      - Blog
-      summary: All published Blogs
-      description: Gets all published blog post
-      operationId: AllpublishedBlogs
-      parameters: []
-      responses:
-        200:
-          description: ''
-          headers: {}
-      deprecated: false
-    post:
-      tags:
-      - Blog
-      summary: Create a blog post
-      description: Creates a blog post
-      operationId: Createablogpost
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateablogpostRequest'
-            example:
-              title: Testing loging out 2
-              body: Some text that that is in the blog
-              tags: Java, C++, Python Javascript
-              isPublished: false
-        required: true
-      responses:
-        200:
-          description: ''
-          headers: {}
-      deprecated: false
-  /blog/602a9d727651d7352816b545:
-    put:
-      tags:
-      - Blog
-      summary: Update Blog post
-      operationId: Update Blog Post
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateBlogpostRequest'
-            example:
-              isPublished: false
-              tags: javascript
-              title: Blog Test Zero
-              body: Some text that that is in the blog 0
-        required: true
-      responses:
-        200:
-          description: ''
-          headers: {}
-      deprecated: false
-  /blog/unpublished:
-    get:
-      tags:
-      - Blog
-      summary: All unpublished blogs
-      description: 'Returns all unpublished blog post '
-      operationId: Allunpublishedblogs
-      parameters: []
-      responses:
-        200:
-          description: ''
-          headers: {}
-      deprecated: false
-  /blog/comment/602a9d727651d7352816b545:
-    post:
-      tags:
-      - Comments
-      summary: Creates a comment
-      description: >
-        Adds a commit to a blog
-      operationId: Creates a Comment
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreatesacommentRequest'
-            example:
-              name: This comment goes to delete blog test
-              email: test@email.com
-              comment: The body of the comment
-        required: true
-      responses:
-        200:
-          description: ''
-          headers: {}
-      deprecated: false
   /auth/login:
     post:
       tags:
       - Auth
-      summary: Login In Route
+      summary: Login A User
+      description: After logging in, click the "Authorize" button and add the token in the response to the input and click Authorize
       operationId: LoginInRoute
-      parameters: []
       requestBody:
-        description: ''
+        description:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginInRouteRequest'
+              $ref: '#/components/schemas/LoginInRoute'
             example:
               email: demo@email.com
               password: "123456"
@@ -160,7 +33,7 @@ paths:
       responses:
         200:
           description: ''
-          headers: {}
+          header: {}
       deprecated: false
   /auth/logout:
     get:
@@ -187,6 +60,7 @@ paths:
       tags:
       - Projects
       summary: Get all projects
+      description: You do not need to be logged in to get all Projects
       operationId: Getallprojects
       parameters: []
       responses:
@@ -206,7 +80,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateaprojectRequest'
+              $ref: '#/components/schemas/Createaproject'
             example:
               name: Project 5
               description: Some cool stuff this project does
@@ -219,49 +93,239 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-  /project/602abb5b7e7a6d0828b4a270:
+  /project/{projectID}:
     get:
+      security:
+        - bearerAuth: []
       tags:
       - Projects
       summary: Gets a single project
       description: 'Gets a single project with the project id. '
       operationId: Getsasingleproject
-      parameters: []
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: The project's ID
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Updatesaproject'
+            example:
+              name: Projects Name
+              description: Some cool stuff that project does
+              languages: Javacript, Django, HTML
+              website: Were the project is hosted
+              github: Github Repo
+        required: true  
       responses:
         200:
           description: ''
           headers: {}
       deprecated: false
-  /project/602ab478bd6ac8e847bc9aa1:
     put:
       tags:
       - Projects
       summary: Updates a project
       description: Makes updates to projects
       operationId: Updatesaproject
-      parameters: []
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: The project's ID
       requestBody:
         description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdatesaprojectRequest'
+              $ref: '#/components/schemas/Updatesaproject'
             example:
-              description: Some cool stuff that project 0 does
+              name: Projects Name
+              description: Some cool stuff that project does
+              languages: Javacript, Django, HTML
+              website: Were the project is hosted
+              github: Github Repo
         required: true
       responses:
         200:
           description: ''
           headers: {}
       deprecated: false
-  /project/602abb657e7a6d0828b4a272:
     delete:
       tags:
       - Projects
       summary: Delete
       description: Deletes a project from the DB
       operationId: Delete
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: The project's ID
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog:
+    get:
+      tags:
+      - Blog
+      summary: All published Blogs
+      description: You do not need to be logged in to get all blogs, This route returns all published blog post 
+      operationId: AllpublishedBlogs
       parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - Blog
+      summary: Create a blog post
+      description: Creates a blog post
+      operationId: Createablogpost
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Createablogpost'
+            example:
+              title: Testing loging out 2
+              body: Some text that that is in the blog
+              tags: Java, C++, Python Javascript
+              isPublished: false
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog/unpublished:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+      - Blog
+      summary: All unpublished blogs
+      description: Returns all unpublished blog post
+      operationId: Allunpublishedblogs
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog/{blogID}:
+    get:
+      tags:
+      - Blog
+      summary: Get a single blog post
+      description: Get a single blog by id with all comments
+      operationId: Get a single blog post
+      parameters:
+        - in: path
+          name: blogID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: The blog post ID
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    put:
+      tags:
+      - Blog
+      summary: Update Blog Post
+      operationId: Update Blog Post
+      parameters:
+        - in: path
+          name: blogID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: The blog post ID
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBlogpost'
+            example:
+              isPublished: false
+              tags: javascript
+              title: Blog Test Zero
+              body: Some text that that is in the blog 0
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - Blog
+      summary: Delete A Blog Post
+      description: Delete A Blog Post
+      operationId: DeleteABlogPost
+      parameters:
+        - in: path
+          name: blogID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: The blog post ID
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog/comment/{blogID}:
+    post:
+      tags:
+      - Comments
+      summary: Creates a comment
+      description: You do not need to be logged in to make a Comment. Adds a commit to a blog
+      operationId: Creates a Comment
+      parameters:
+        - in: path
+          name: blogID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: The blog post ID
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Createsacomment'
+            example:
+              name: This comment goes to delete blog test
+              email: test@email.com
+              comment: The body of the comment
+        required: true
       responses:
         200:
           description: ''
@@ -269,69 +333,7 @@ paths:
       deprecated: false
 components:
   schemas:
-    CreateablogpostRequest:
-      title: Create a blog post request
-      required:
-      - title
-      - body
-      - tags
-      - isPublished
-      type: object
-      properties:
-        title:
-          type: string
-        body:
-          type: string
-        tags:
-          type: string
-        isPublished:
-          type: string
-      example:
-        title: Blog Title
-        body: Blog Content
-        tags: Java, C++, Python Javascript
-        isPublished: false
-    UpdateBlogpostRequest:
-      title: Update Blog Post
-      required:
-      - isPublished
-      - tags
-      - title
-      - body
-      type: object
-      properties:
-        isPublished:
-          type: string
-        tags:
-          type: string
-        title:
-          type: string
-        body:
-          type: string
-      example:
-        title: Change the title
-        body: Edit the body of the blog
-        tags: Add tags
-        isPublished: Change from true to false or vice versa
-    CreatesacommentRequest:
-      title: Create A Comment
-      required:
-      - name
-      - email
-      - comment
-      type: object
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-        comment:
-          type: string
-      example:
-        name: Name of person creating the comment
-        email: name@email.com
-        comment: The body of the comment
-    LoginInRouteRequest:
+    LoginInRoute:
       title: Log In Route
       required:
       - email
@@ -345,14 +347,12 @@ components:
       example:
         email: demo@email.com
         password: 123456
-    CreateaprojectRequest:
+    Createaproject:
       title: Create A Project
       required:
       - name
       - description
       - languages
-      - website
-      - github
       type: object
       properties:
         name:
@@ -371,27 +371,89 @@ components:
         languages: Javascript, HTML, CSS
         website: The projects website
         github: Users Github Link
-    UpdatesaprojectRequest:
+    Updatesaproject:
       title: Update A Project
-      required:
-      - description
       type: object
       properties:
+        name:
+          type: string
         description:
+          type: string
+        languages:
+          type: string
+        website:
+          type: string
+        github:
           type: string
       example:
         name: Change the name
         description: Some cool stuff that the project does
         website: Change the website
         github: Change the link to the repo
+    Createablogpost:
+      title: Create a blog post
+      required:
+      - title
+      - body
+      - isPublished
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: string
+        isPublished:
+          type: string
+      example:
+        title: Blog Title
+        body: Blog Content
+        tags: Java, C++, Python Javascript
+        isPublished: false
+    UpdateBlogpost:
+      title: Update Blog Post
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: string
+        isPublished:
+          type: string
+      example:
+        title: Change the title
+        body: Edit the body of the blog
+        tags: Add tags
+        isPublished: Change from true to false or vice versa
+    Createsacomment:
+      title: Adds a comment to a blog post
+      type: object
+      required:
+        - email
+        - comment
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        comment:
+          type: string
+      example:
+        name: Name of person makeing the comment
+        email: someone@email.com
+        comment: Body of the comment
   securitySchemes:
-    httpBearer:
+    bearerAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT  
 security:
-- httpBearer: []
+- bearerAuth: []
 tags:
-- name: Blog
-- name: Comments
 - name: Auth
 - name: Projects
+- name: Blog
+- name: Comments
