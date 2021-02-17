@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Profile API
-  description: A simple CRUD API that can be used to display projects that you created and write simple blogs about them or use as a stand alone API for ether. See the code at [https://github.com/WesleySalesberry/Profile-Blog-Api](Github)
+  description: A simple CRUD API that can be used to display projects that you created and write simple blogs about them or use as a stand alone API for ether. 
   version: 'v1.0.0'
   termsOfService: https://smartbear.com/terms-of-use/
   contact:
@@ -295,6 +295,32 @@ paths:
             type: string
             minimum: 1
           description: The blog post ID
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog/image/{blogID}:
+    put:
+      tags:
+      - Blog
+      summary: Add an image
+      description: Add an image
+      operationId: Addanimage
+      parameters:
+        - in: path
+          name: blogID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: The blog post ID
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
       responses:
         200:
           description: ''
