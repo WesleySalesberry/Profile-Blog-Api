@@ -99,11 +99,11 @@ exports.blogPhoto = handler( async (req, res, next) => {
             console.log(`${err}`)
             return next()
         }
-        // await Blog.findByIdAndUpdate(blogID, { image: image.name })
-        //const myImage = await cloudinary.uploader
-        // console.log(myImage)
-        // const cloudIMG = await cloudinary.uploader.upload(`${process.env.FILE_UPLOAD_PATH}/${image.name}`)
-        // console.log(cloudIMG)
+        const cloudIMG = await cloudinary.uploader.upload(`${process.env.FILE_UPLOAD_PATH}/${image.name}`)
+        blogPost = await Blog.findByIdAndUpdate(blogID, {
+            image: cloudIMG.secure_url,
+            cloudinary_id: cloudIMG.public_id 
+        })
     })
    
 
