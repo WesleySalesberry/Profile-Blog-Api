@@ -3,7 +3,7 @@
 A simple CRUD API that can be used as a stand alone API to ether display projects, blog or both.      
 
 ## Demo
-[API URL](https://profile-blog-api.herokuapp.com/api-docs/)
+You can demo the [API](https://profile-blog-api.herokuapp.com/api-docs/) here. 
 
 ## Prerequisites
 * You have installed the latest version of Node
