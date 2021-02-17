@@ -10,7 +10,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-- url: http://localhost:5000/api/v1
+- url: https://profile-blog-api.herokuapp.com/api/v1
   variables: {}
 paths:
   /auth/login:
