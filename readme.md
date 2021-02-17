@@ -24,7 +24,7 @@ Alternatively see the GitHub documentation on [creating a pull request](https://
 
 To install, follow these steps:
 
-javascript```
+```javascript
 npm install 
 ```
 
