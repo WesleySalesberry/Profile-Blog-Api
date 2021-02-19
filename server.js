@@ -45,7 +45,12 @@ const comment = require('./routes/comment')
 const projects = require('./routes/project')
 const auth = require('./routes/auth')
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+const options ={
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: "Wesley's API",
+}
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, options));
 app.use('/api/v1/blog', blog)
 app.use('/api/v1/comment', comment)
 app.use('/api/v1/auth', auth)
