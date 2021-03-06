@@ -12,6 +12,8 @@ info:
 servers:
 - url: https://profile-blog-api.herokuapp.com/api/v1
   variables: {}
+- url: http://localhost:5000/api/v1
+  variables: {}
 paths:
   /auth/login:
     post:
@@ -34,6 +36,29 @@ paths:
         200:
           description: ''
           header: {}
+      deprecated: false
+  /auth/user:
+    get:
+      security:
+        - {}
+        - bearerAuth: []
+      tags:
+      - Auth
+      summary: Get current user 
+      operationId: user
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: application/json
+      responses:
+        200:
+          description: ''
+          headers: {}
       deprecated: false
   /auth/logout:
     get:
