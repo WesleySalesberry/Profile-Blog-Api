@@ -56,6 +56,18 @@ exports.login = handler( async (req, res, next) => {
     tokenResponse(user, 200, res)
 })
 
+// @desc  Get current Login User
+// @route  GET /api/v1/auth/login
+// @access Private
+exports.getUser = handler(async (req, res, next) =>{
+    const user = await User.findById(req.user.id)
+
+    res.status(200).json({
+        success: true,
+        data: user
+    })
+})
+
 // @desc   Log User Out
 // @route  GET /api/v1/auth/logout
 // @access Private
