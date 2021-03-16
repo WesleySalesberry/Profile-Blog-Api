@@ -44,6 +44,7 @@ const blog = require('./routes/blog')
 const comment = require('./routes/comment')
 const projects = require('./routes/project')
 const auth = require('./routes/auth')
+const mail = require('./routes/sendEmail')
 
 const options ={
     customCss: '.swagger-ui .topbar { display: none }',
@@ -55,6 +56,7 @@ app.use('/api/v1/blog', blog)
 app.use('/api/v1/comment', comment)
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/project', projects)
+app.use('/api/v1/mail', mail)
 
 app.use(errorHandler)
 
