@@ -41,7 +41,7 @@ const sendEmail = async (options) => {
     }
 
     const contactMessage = await transporter.sendMail(message,  (err, info) => {
-        err ?  console.log(`Utils-Error: ${err}`) :  console.log(info)
+        err ?  console.log(`Utils-Error: ${err}`) :  info
     })
     //console.log('Message sent: %s', contactMessage.messageId);
 

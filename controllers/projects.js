@@ -1,5 +1,6 @@
 const Project = require('../models/Project')
 const handler = require('../middlewares/handler')
+const ErrorResponse = require('../utils/errorResponse')
 
 /**********************************************
  *   ✔: Return all projects
